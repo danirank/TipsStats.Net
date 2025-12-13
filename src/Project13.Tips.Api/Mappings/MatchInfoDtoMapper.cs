@@ -1,6 +1,6 @@
-﻿using SvSWebApiTips.Models;
+﻿using Project13.Tips.Api.Models;
 
-namespace SvSWebApiTips.Mappings
+namespace Project13.Tips.Api.Mappings
 {
     public static class MatchInfoDtoMapper
     {

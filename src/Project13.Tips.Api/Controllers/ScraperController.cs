@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SvSWebApiTips.Models;
-using SvSWebApiTips.Services;
-using SvSWebApiTips.Mappings;
-using SvSWebApiTips.Constants;
+using Project13.Tips.Api.Models;
+using Project13.Tips.Api.Services;
+using Project13.Tips.Api.Mappings;
+using Project13.Tips.Api.Constants;
 
 
-namespace SvSWebApiTips.Controllers
+namespace Project13.Tips.Api.Controllers
 {
     [ApiController]
     [Route("api/svenskaspel/")]
@@ -19,19 +19,22 @@ namespace SvSWebApiTips.Controllers
             _scraperService = scraperService;
         }
 
+        
+      
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MatchInfoDto>>> GetKupong([FromQuery] TipType tips)
+        public async Task<ActionResult<CouponDto>> GetKupong([FromQuery] TipType tipsTyp)
         {
             try
             {
-                var resultat = await _scraperService.GetKupong(tips);
-                var dto = resultat.Select(m => m.ToDto());
-                return Ok(dto);
+                var resultat = await _scraperService.GetKupong(tipsTyp);
+                return Ok(resultat);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Ett fel uppstod vid hämtning av kupongen: {ex.Message}");
             }
         }
+
+
     }
 }

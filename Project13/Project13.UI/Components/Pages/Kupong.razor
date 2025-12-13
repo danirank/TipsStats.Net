@@ -1,0 +1,43 @@
+﻿@using Project13.Tips.Api.Models
+
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <label>Kupong</label>
+    </div>
+    <div class="card-body border-2">
+        @foreach (var match in kupong)
+        {
+
+            <div class="card">
+                <div class="row">
+                    <div class="col">
+                        <p><strong>@match.MatchNo. @match.HomeTeam - @match.AwayTeam / @match.OddsPct1 / @match.FolkPct1</strong></p>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+        }
+
+
+    </div>
+
+</div>
+@code 
+{
+    [Inject]
+    public HttpClient Http { get; set; } = default!;
+    private List<MatchInfoDto> kupong { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        kupong = await Http.GetFromJsonAsync<List<MatchInfoDto>>("api/svenskaspel?tips=Stryktipset") ?? new List<MatchInfoDto>();
+    }
+
+}

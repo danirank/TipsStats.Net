@@ -1,4 +1,4 @@
-﻿namespace SvSWebApiTips.Models
+﻿namespace Project13.Tips.Api.Models
 {
     public record MatchInfoDto(
         int MatchNo,

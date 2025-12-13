@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SvSWebApiTips.Models
+namespace Project13.Tips.Api.Models
 {
 
     public class MatchInfo

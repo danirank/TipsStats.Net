@@ -1,7 +1,7 @@
-using SvSWebApiTips.Services;
+using Project13.Tips.Api.Services;
 using System.Text.Json.Serialization;
 
-namespace SvSWebApiTips
+namespace Project13.Tips.Api
 {
     public class Program
     {

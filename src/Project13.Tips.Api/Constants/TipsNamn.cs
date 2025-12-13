@@ -1,4 +1,4 @@
-﻿namespace SvSWebApiTips.Constants
+﻿namespace Project13.Tips.Api.Constants
 {
     public enum TipType
     {

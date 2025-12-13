@@ -115,7 +115,7 @@ namespace Project13.Stats.SeedStatsToDb
 
 
         //Skriv till DB
-        public static async Task WriteToDatabase(
+    public static async Task WriteToDatabase(
     AppDbContext dbContext,
     List<Summering> summering,
     List<Detaljer> detaljer)

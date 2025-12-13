@@ -1,15 +1,17 @@
 ﻿using Microsoft.Playwright;
-using SvSWebApiTips.Constants;
-using SvSWebApiTips.Models;
+using Project13.Tips.Api.Constants;
+using Project13.Tips.Api.Mappings;
+using Project13.Tips.Api.Models;
 using System.Globalization;
+using System.Text.RegularExpressions;
 
-namespace SvSWebApiTips.Services
+namespace Project13.Tips.Api.Services
 {
     public class ScraperService
     {
-        public async Task<List<MatchInfo>> GetKupong(TipType tipsTyp)
+        public async Task<CouponDto> GetKupong(TipType tipsTyp)
         {
-            var resultat = new List<MatchInfo>();
+            var matchInfoList = new List<MatchInfo>();
             string url = tipsTyp switch
             {
                 TipType.Stryktipset => $"https://www.spela.svenskaspel.se/{TipsNamn.Stryktipset}",
@@ -27,6 +29,47 @@ namespace SvSWebApiTips.Services
 
             var page = await browser.NewPageAsync();
             await page.GotoAsync(url);
+
+            await page.WaitForSelectorAsync("div.pg_draw_card_container");
+
+            string? weekText = null;
+
+            var weekEl = await page.QuerySelectorAsync("div.pg_draw_card__title__content");
+            if (weekEl is not null)
+            {
+                weekText = (await weekEl.TextContentAsync())?.Trim();
+            }
+
+            var weekNumber = ExtractFirstInt(weekText ?? "");
+
+            string? turnoverText = null;
+
+            var turnoverEl = await page.QuerySelectorAsync("span.currency-counter");
+            if (turnoverEl is not null)
+            {
+                turnoverText = (await turnoverEl.TextContentAsync());
+            }
+
+            long turnover = 0;
+
+            if (!string.IsNullOrWhiteSpace(turnoverText))
+            {
+                // normalisera texten
+                var cleaned = turnoverText
+                    .Replace("\u00A0", "")   // nbsp
+                    .Replace(" ", "")        // vanlig space
+                    .Trim();
+
+                long.TryParse(cleaned, out turnover);
+            }
+
+
+            var coupon = new CouponDto
+            {
+                Week = weekNumber,
+                Turnover = turnover,
+                
+            }; 
 
             var kupong = await page.WaitForSelectorAsync("li.coupon-row-container");
             var matchElements = await page.QuerySelectorAllAsync("li.coupon-row-container");
@@ -57,7 +100,7 @@ namespace SvSWebApiTips.Services
                             SvenskaFolketProcent2 = ParseDouble(await procentDivs[2].InnerTextAsync(), true)
                         };
 
-                        resultat.Add(matchInfo);
+                        matchInfoList.Add(matchInfo);
                     }
                 }
                 catch (Exception ex)
@@ -66,13 +109,29 @@ namespace SvSWebApiTips.Services
                 }
             }
 
-            return resultat;
+            coupon.Matches = matchInfoList.Select(m => m.ToDto()).ToList();
+
+            return coupon;
         }
 
         private static double ParseDouble(string input, bool isPercent = false)
         {
             input = input.Replace("%", "").Replace(",", ".").Trim();
             return double.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out var val) ? val : 0;
+        }
+
+        // "Vecka 50" -> 50
+        private static int ExtractFirstInt(string text)
+        {
+            var m = Regex.Match(text ?? "", @"\d+");
+            return m.Success ? int.Parse(m.Value) : 0;
+        }
+
+        // "11 816 074" -> 11816074 (tar bort nbsp/spaces och allt som inte är siffra)
+        private static long ExtractDigitsAsLong(string text)
+        {
+            var digits = Regex.Replace(text ?? "", @"[^\d]", "");
+            return long.TryParse(digits, out var val) ? val : 0;
         }
 
     }
