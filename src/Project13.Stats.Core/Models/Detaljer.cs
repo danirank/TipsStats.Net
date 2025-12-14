@@ -14,7 +14,13 @@ namespace Project13.Stats.Core.Models
         // Primärnyckel i databasen (kommer inte från CSV)
         [Ignore]
         public int Id { get; set; }
-        
+
+        [Ignore] // så CsvHelper inte försöker läsa den
+        public int SummeringId { get; set; }
+
+        [Ignore]
+        public Summering Summering { get; set; } = null!;
+
 
         [Name("produktnamn")]
         public string Produktnamn { get; set; } = string.Empty;
@@ -140,9 +146,8 @@ namespace Project13.Stats.Core.Models
         public int SvSpelInfoId { get; set; }    // unik/id från Svenska Spel
 
 
-        [ForeignKey(nameof(SvSpelInfoId))]
-        [Ignore]
-        public Summering? Summering { get; set; }
+    
+
     }
 
 

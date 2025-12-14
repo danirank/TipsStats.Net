@@ -6,6 +6,8 @@ namespace Project13.Stats.Core.Models
     {
         // Identitet
         public int Id { get; set; }
+
+        public int SvSpelInfoId { get; set; }
         public string Tips { get; set; } = string.Empty;
         public int? Vecka { get; set; }
 
@@ -14,8 +16,8 @@ namespace Project13.Stats.Core.Models
         public int? Antal13 { get; set; }
         public decimal? Omsattning { get; set; }
 
-        // Matcher (DTO-version)
-        public List<MatchDto> Matcher { get; set; } = new();
+       
+        public List<MatchEntity> Matcher { get; set; } = new();
 
         // Oddsprofiler
         public decimal MultipliceradeOddsMarknad { get; set; }
@@ -34,6 +36,12 @@ namespace Project13.Stats.Core.Models
         public int TotFavoriter { get; set; }
         public int TotVinstFav { get; set; }
         public int TotDiff { get; set; }
+
+        public bool StrongestFavoriteWon { get; set; }
+        public decimal? StrongestFavoriteOdds { get; set; }
+        public decimal StrongestFavoriteDisagreement { get; set; }
+        public int StrongestFavoriteMatchNumber { get; set; }
+
 
         public decimal SkrallIndexProcent { get; set; }
         public int AntalSkrällar { get; set; }                       // Nytt

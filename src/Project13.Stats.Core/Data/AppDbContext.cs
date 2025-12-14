@@ -15,6 +15,10 @@ namespace Project13.Stats.Core.Data
         public DbSet<Detaljer> Detaljer { get; set; }
         public DbSet<Summering> Summering { get; set; }
 
+        public DbSet<CalculationModel> Calculations => Set<CalculationModel>();
+        public DbSet<MatchEntity> Matches => Set<MatchEntity>();
+
+
         public AppDbContext(DbContextOptions<AppDbContext> optionsBuilder) : base(optionsBuilder) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -2,13 +2,12 @@
 
 namespace Project13.Tips.Api.Models
 {
-    public class CouponDto
-    {
-        public TipType TipType { get; set; }
-        public int Week { get; set; }
+    public sealed record CouponDto(
+      string? TipType,
+      int? Week,
+      string? Turnover,
+      IReadOnlyList<MatchInfoDto> Matches
+    );
 
-        public long Turnover { get; set; }
 
-        public List<MatchInfoDto> Matches { get; set; } = new();
-    }
 }

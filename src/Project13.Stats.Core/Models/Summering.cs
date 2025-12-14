@@ -11,9 +11,12 @@ namespace Project13.Stats.Core.Models
 
     public class Summering
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Name("id")]
+        [Ignore]
         public int Id { get; set; }
+
+
+        [Name("id")]
+        public int SvSpelInfoId { get; set; }
 
         public List<Detaljer> Matches { get; set; } = new();
 

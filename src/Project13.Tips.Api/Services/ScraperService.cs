@@ -50,26 +50,23 @@ namespace Project13.Tips.Api.Services
                 turnoverText = (await turnoverEl.TextContentAsync());
             }
 
-            long turnover = 0;
+            //Om omsättning behövs som nummer 
 
-            if (!string.IsNullOrWhiteSpace(turnoverText))
-            {
-                // normalisera texten
-                var cleaned = turnoverText
-                    .Replace("\u00A0", "")   // nbsp
-                    .Replace(" ", "")        // vanlig space
-                    .Trim();
+            //long turnover = 0;
 
-                long.TryParse(cleaned, out turnover);
-            }
+            //if (!string.IsNullOrWhiteSpace(turnoverText))
+            //{
+            //    // normalisera texten
+            //    var cleaned = turnoverText
+            //        .Replace("\u00A0", "")   // nbsp
+            //        .Replace(" ", "")        // vanlig space
+            //        .Trim();
+
+            //    long.TryParse(cleaned, out turnover);
+            //}
 
 
-            var coupon = new CouponDto
-            {
-                Week = weekNumber,
-                Turnover = turnover,
-                
-            }; 
+
 
             var kupong = await page.WaitForSelectorAsync("li.coupon-row-container");
             var matchElements = await page.QuerySelectorAllAsync("li.coupon-row-container");
@@ -109,7 +106,21 @@ namespace Project13.Tips.Api.Services
                 }
             }
 
-            coupon.Matches = matchInfoList.Select(m => m.ToDto()).ToList();
+            var coupon = new CouponDto(
+                TipType: tipsTyp switch
+                {
+                    TipType.Stryktipset => TipsNamn.Stryktipset,
+                    TipType.Europatipset => TipsNamn.Europatipset,
+                    TipType.Topptipset => TipsNamn.Topptipset,
+                    _ => null
+                },
+                    Week: weekNumber,
+                    Turnover: turnoverText,
+                    Matches: matchInfoList.Select(m => m.ToDto()).ToList()
+            );
+
+
+
 
             return coupon;
         }
@@ -135,5 +146,5 @@ namespace Project13.Tips.Api.Services
         }
 
     }
-    
+
 }

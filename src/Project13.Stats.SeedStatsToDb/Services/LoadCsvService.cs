@@ -18,6 +18,7 @@ namespace Project13.Stats.DataSeeder.Services
                 {
                     HasHeaderRecord = true,
                     Delimiter = ";"
+                    
                 };
                 using var csv = new CsvHelper.CsvReader(reader, config);
 

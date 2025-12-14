@@ -1,20 +1,28 @@
-﻿namespace Project13.Stats.Core.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Project13.Stats.Core.Models
 {
-    public class MatchDto
-    {
-        public int Matchnummer { get; set; }
-        public string Hemmalag { get; set; } = "";
-        public string Bortalag { get; set; } = "";
-        public string Utfall { get; set; } = "";
+    public sealed record MatchDto
+(
+    int Matchnummer,
+    string Hemmalag,
+    string Bortalag,
+    string Utfall,
 
-        public decimal? Oddset1 { get; set; }
-        public decimal? OddsetX { get; set; }
-        public decimal? Oddset2 { get; set; }
+    decimal? Oddset1,
+    decimal? OddsetX,
+    decimal? Oddset2,
 
-        public decimal? SvenskaFolket1 { get; set; }
-        public decimal? SvenskaFolketX { get; set; }
-        public decimal? SvenskaFolket2 { get; set; }
+    decimal? SvenskaFolket1,
+    decimal? SvenskaFolketX,
+    decimal? SvenskaFolket2,
 
-        public decimal Disagreement { get; set; }      // |folket% - odds%|
-    }
+    decimal? KvotKorrektTecken,
+    decimal Disagreement
+);
+
 }

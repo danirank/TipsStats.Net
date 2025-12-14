@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project13.Stats.Core.Data;
 
@@ -11,9 +12,11 @@ using Project13.Stats.Core.Data;
 namespace Project13.Stats.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251214124456_firstMig3")]
+    partial class firstMig3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,18 +101,6 @@ namespace Project13.Stats.Core.Migrations
 
                     b.Property<decimal>("StorFavoritTraffProcent")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("StrongestFavoriteDisagreement")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("StrongestFavoriteMatchNumber")
-                        .HasColumnType("int");
-
-                    b.Property<decimal?>("StrongestFavoriteOdds")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<bool>("StrongestFavoriteWon")
-                        .HasColumnType("bit");
 
                     b.Property<int>("SvSpelInfoId")
                         .HasColumnType("int");
@@ -306,9 +297,6 @@ namespace Project13.Stats.Core.Migrations
                     b.Property<string>("Hemmalag")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("KvotKorrektTecken")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Matchnummer")
                         .HasColumnType("int");

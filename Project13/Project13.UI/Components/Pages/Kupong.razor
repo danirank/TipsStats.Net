@@ -1,43 +1,113 @@
 ﻿@using Project13.Tips.Api.Models
-
+@using Project13.Tips.Api.Constants
 
 <div class="card">
     <div class="card-header bg-primary text-white">
         <label>Kupong</label>
     </div>
-    <div class="card-body border-2">
-        @foreach (var match in kupong)
+    <div class="card-body border-5">
+        @if (coupon is null)
+        {
+            <p>Laddar....</p>
+        }
+        else
         {
 
-            <div class="card">
-                <div class="row">
-                    <div class="col">
-                        <p><strong>@match.MatchNo. @match.HomeTeam - @match.AwayTeam / @match.OddsPct1 / @match.FolkPct1</strong></p>
+            <div class=" row">
+                <div class="col m-2 text-black">
+                    <label>Vecka: @coupon.Week</label>
+                </div>
+                <div class="col m-2 text-black">
+                    <label>Omsättning: @coupon.Turnover kr</label>
+                </div>
+               
+
+            </div>
+            @foreach (var match in matcher)
+            {
+
+                <div class="card">
+                    <div class="row mb-2">
+                        <div class="col-4">
+                           <TeckenButton Title="@match.HomeTeam"
+                                         Odds="@match.Odds1"
+                                         FolkOdds="@match.FolkOdds1"
+                                         Pct="@match.OddsPct1"
+                                         FolkPct="@match.FolkPct1"
+                                          Kvot="@match.Kvot1" />
+
+                        </div>
+
+
+                        <div class="col-4">
+                            <TeckenButton Title="X"
+                                          Odds="@match.OddsX"
+                                          FolkOdds="@match.FolkOddsX"
+                                          Pct="@match.OddsPctX"
+                                          FolkPct="@match.FolkPctX"
+                                          Kvot="@match.KvotX" />
+                        </div>
+
+                        <div class="col-4">
+                            <TeckenButton Title="@match.AwayTeam"
+                                          Odds="@match.Odds2"
+                                          FolkOdds="@match.FolkOdds2"
+                                          Pct="@match.OddsPct2"
+                                          FolkPct="@match.FolkPct2"
+                                          Kvot="@match.Kvot2" />
+                        </div>
+
+
+
+
+
                     </div>
 
                 </div>
 
-            </div>
 
 
 
+            }
 
         }
-
 
     </div>
 
 </div>
-@code 
+@code
 {
     [Inject]
     public HttpClient Http { get; set; } = default!;
-    private List<MatchInfoDto> kupong { get; set; } = new();
+    private IReadOnlyList<MatchInfoDto>? matcher { get; set; }
+    private CouponDto? coupon { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        kupong = await Http.GetFromJsonAsync<List<MatchInfoDto>>("api/svenskaspel?tips=Stryktipset") ?? new List<MatchInfoDto>();
+        try
+        {
+            coupon = await Http.GetFromJsonAsync<CouponDto>(ApiRoutes.Europatipset) ?? null;
+
+            if (coupon is not null)
+            {
+                matcher = coupon.Matches;
+                
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
     }
+
+    @code {
+    private void SelectSign(MatchInfo match, string sign)
+    {
+        // TODO: din logik här: sätt vald markering, uppdatera valdaTecken, etc.
+    }
+}
+
 
 }

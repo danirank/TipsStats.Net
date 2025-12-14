@@ -13,4 +13,11 @@
         public const string Topptipset = "topptipset";
     }
 
+    public static class ApiRoutes
+    {
+        public const string Base = "api/svenskaspel?tipsTyp=";
+        public const string Stryktipset = Base + TipsNamn.Stryktipset;
+        public const string Europatipset = Base + TipsNamn.Europatipset;
+        public const string Topptipset = Base + TipsNamn.Topptipset;
+    }
 }

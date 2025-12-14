@@ -1,0 +1,33 @@
+﻿<button type="button" class="btn btn-outline-primary w-100 text-start m-2" @onclick="OnClick">
+    <div class="fw-bold text-dark mb-2">@Title</div>
+
+    <div class="row small">
+        <div class="col-3 text-muted">
+            <div>Odds</div>
+            <div>%</div>
+            <div>Kvot</div>
+        </div>
+        <div class="col-9">
+            <div>@Odds / @FolkOdds (Marknad / Svf)</div>
+            <div>@Pct% / @FolkPct% (Marknad / Svf)</div>
+            <div class="fw-semibold">@Kvot</div>
+        </div>
+    </div>
+</button>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+
+    [Parameter] public object? Odds { get; set; }
+    [Parameter] public object? FolkOdds { get; set; }
+
+    [Parameter] public object? Pct { get; set; }
+    [Parameter] public object? FolkPct { get; set; }
+
+    [Parameter] public object? Kvot { get; set; }
+
+    // valfritt: om du vill kunna klicka och göra något (t.ex. välja tecken)
+    [Parameter] public EventCallback OnClick { get; set; }
+
+
+}

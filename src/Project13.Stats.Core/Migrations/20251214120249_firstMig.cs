@@ -6,16 +6,60 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Project13.Stats.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class firstMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Calculations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SvSpelInfoId = table.Column<int>(type: "int", nullable: false),
+                    Tips = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Vecka = table.Column<int>(type: "int", nullable: true),
+                    Utdelning13 = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Antal13 = table.Column<int>(type: "int", nullable: true),
+                    Omsattning = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    MultipliceradeOddsMarknad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MultipliceradeOddsSvFolket = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OddsKvotTotal = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OddsKvotPerMatch = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OddsFavoritrad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OddsFavoritradSvF = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    KvotFavoritRad = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AntalStorfavoriter = table.Column<int>(type: "int", nullable: false),
+                    AntalMellanFavoriter = table.Column<int>(type: "int", nullable: false),
+                    AntalStorfavoriterVinst = table.Column<int>(type: "int", nullable: false),
+                    AntalMellanFavoriterVinst = table.Column<int>(type: "int", nullable: false),
+                    TotFavoriter = table.Column<int>(type: "int", nullable: false),
+                    TotVinstFav = table.Column<int>(type: "int", nullable: false),
+                    TotDiff = table.Column<int>(type: "int", nullable: false),
+                    SkrallIndexProcent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AntalSkrällar = table.Column<int>(type: "int", nullable: false),
+                    FavoritIndexProcent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    StorFavoritTraffProcent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MellanFavoritTraffProcent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    FolketsFelProcent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    OddsetFelProcent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MeanDisagreement = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    MaxDisagreement = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    DisagreementTop3Sum = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Calculations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Summering",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SvSpelInfoId = table.Column<int>(type: "int", nullable: false),
                     Vecka = table.Column<int>(type: "int", nullable: false),
                     Produktnamn = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CorrectRow = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -54,6 +98,36 @@ namespace Project13.Stats.Core.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Summering", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CalculationModelId = table.Column<int>(type: "int", nullable: false),
+                    Matchnummer = table.Column<int>(type: "int", nullable: false),
+                    Hemmalag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Bortalag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Utfall = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Oddset1 = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    OddsetX = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Oddset2 = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SvenskaFolket1 = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SvenskaFolketX = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SvenskaFolket2 = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Disagreement = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Matches_Calculations_CalculationModelId",
+                        column: x => x.CalculationModelId,
+                        principalTable: "Calculations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,6 +193,11 @@ namespace Project13.Stats.Core.Migrations
                 name: "IX_Detaljer_SvSpelInfoId",
                 table: "Detaljer",
                 column: "SvSpelInfoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_CalculationModelId",
+                table: "Matches",
+                column: "CalculationModelId");
         }
 
         /// <inheritdoc />
@@ -128,7 +207,13 @@ namespace Project13.Stats.Core.Migrations
                 name: "Detaljer");
 
             migrationBuilder.DropTable(
+                name: "Matches");
+
+            migrationBuilder.DropTable(
                 name: "Summering");
+
+            migrationBuilder.DropTable(
+                name: "Calculations");
         }
     }
 }

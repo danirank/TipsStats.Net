@@ -40,7 +40,7 @@ namespace Project13.Tips.Api.Models
             }
 
             var folketOdds = 100.0 / procent;
-            return folketOdds / odds;
+            return Math.Round(folketOdds / odds,2);
         }
 
         private double OddsTillProcent(double odds)

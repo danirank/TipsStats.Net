@@ -16,6 +16,7 @@ namespace Project13.Stats.Api
 
             builder.Services.AddControllers();
             builder.Services.AddScoped<CalculationService>();
+            builder.Services.AddScoped<StatsService>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

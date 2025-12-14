@@ -12,8 +12,8 @@ using Project13.Stats.Core.Data;
 namespace Project13.Stats.Core.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251118182235_Initial")]
-    partial class Initial
+    [Migration("20251214132754_addedKvotKorrektTecken")]
+    partial class addedKvotKorrektTecken
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,110 @@ namespace Project13.Stats.Core.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Project13.Stats.Core.Models.CalculationModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("Antal13")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AntalMellanFavoriter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AntalMellanFavoriterVinst")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AntalSkrällar")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AntalStorfavoriter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AntalStorfavoriterVinst")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DisagreementTop3Sum")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FavoritIndexProcent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("FolketsFelProcent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("KvotFavoritRad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MaxDisagreement")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MeanDisagreement")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MellanFavoritTraffProcent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MultipliceradeOddsMarknad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("MultipliceradeOddsSvFolket")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OddsFavoritrad")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OddsFavoritradSvF")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OddsKvotPerMatch")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OddsKvotTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("OddsetFelProcent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("Omsattning")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SkrallIndexProcent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("StorFavoritTraffProcent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("SvSpelInfoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Tips")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotDiff")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotFavoriter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotVinstFav")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Utdelning13")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("Vecka")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Calculations");
+                });
 
             modelBuilder.Entity("Project13.Stats.Core.Models.Detaljer", b =>
                 {
@@ -125,6 +229,9 @@ namespace Project13.Stats.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("SummeringId")
+                        .HasColumnType("int");
+
                     b.Property<int>("SvSpelInfoId")
                         .HasColumnType("int");
 
@@ -164,15 +271,75 @@ namespace Project13.Stats.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SvSpelInfoId");
+                    b.HasIndex("SummeringId");
 
                     b.ToTable("Detaljer");
+                });
+
+            modelBuilder.Entity("Project13.Stats.Core.Models.MatchEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Bortalag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CalculationModelId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Disagreement")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Hemmalag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("KvotKorrektTecken")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Matchnummer")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("Oddset1")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("Oddset2")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("OddsetX")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SvenskaFolket1")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SvenskaFolket2")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal?>("SvenskaFolketX")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Utfall")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CalculationModelId");
+
+                    b.ToTable("Matches");
                 });
 
             modelBuilder.Entity("Project13.Stats.Core.Models.Summering", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Ant10")
                         .HasColumnType("int");
@@ -260,6 +427,9 @@ namespace Project13.Stats.Core.Migrations
                     b.Property<int?>("RandomResults")
                         .HasColumnType("int");
 
+                    b.Property<int>("SvSpelInfoId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Turnover")
                         .HasColumnType("decimal(18,2)");
 
@@ -287,11 +457,27 @@ namespace Project13.Stats.Core.Migrations
                 {
                     b.HasOne("Project13.Stats.Core.Models.Summering", "Summering")
                         .WithMany("Matches")
-                        .HasForeignKey("SvSpelInfoId")
+                        .HasForeignKey("SummeringId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Summering");
+                });
+
+            modelBuilder.Entity("Project13.Stats.Core.Models.MatchEntity", b =>
+                {
+                    b.HasOne("Project13.Stats.Core.Models.CalculationModel", "CalculationModel")
+                        .WithMany("Matcher")
+                        .HasForeignKey("CalculationModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CalculationModel");
+                });
+
+            modelBuilder.Entity("Project13.Stats.Core.Models.CalculationModel", b =>
+                {
+                    b.Navigation("Matcher");
                 });
 
             modelBuilder.Entity("Project13.Stats.Core.Models.Summering", b =>

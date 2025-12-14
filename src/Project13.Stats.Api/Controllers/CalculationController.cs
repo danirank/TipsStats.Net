@@ -21,14 +21,14 @@ namespace Project13.Stats.Api.Controllers
 
         // GET: api/calculation
         [HttpGet]
-        public async Task<ActionResult<List<CalculationModel>>> GetAllCalculations()
+        public async Task<List<CalculationModel>> GetAllCalculations()
         {
             var summering = await _db.Summering.AsNoTracking().ToListAsync();
             var detaljer = await _db.Detaljer.AsNoTracking().ToListAsync();
 
             var result = _calc.Calculate(summering, detaljer);
 
-            return Ok(result);
+            return result;
         }
 
         // GET: api/calculation/1234
@@ -42,5 +42,33 @@ namespace Project13.Stats.Api.Controllers
 
             return Ok(firstSummering);
         }
+        [HttpPost]
+        public async Task<int> SeedCalculationsToDb()
+        {
+            var calculations = await GetAllCalculations();
+            if (calculations is null || calculations.Count == 0)
+                return 0;
+
+            // Hämta vilka IDs som redan finns
+            var ids = calculations.Select(c => c.SvSpelInfoId).ToList();
+
+            var existingIds = await _db.Calculations
+                .Where(c => ids.Contains(c.SvSpelInfoId))
+                .Select(c => c.SvSpelInfoId)
+                .ToListAsync();
+
+            var toInsert = calculations
+                .Where(c => !existingIds.Contains(c.SvSpelInfoId))
+                .ToList();
+
+            if (toInsert.Count == 0)
+                return 0;
+
+            await _db.Calculations.AddRangeAsync(toInsert);
+            await _db.SaveChangesAsync();
+
+            return toInsert.Count;
+        }
+
     }
 }

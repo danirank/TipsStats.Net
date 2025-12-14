@@ -126,7 +126,7 @@ namespace Project13.Stats.SeedStatsToDb
 
                 // Hämta redan befintliga nycklar EN gång
                 var befintligaSummeringIds = await dbContext.Summering
-                    .Select(s => s.Id)
+                    .Select(s => s.SvSpelInfoId)
                     .ToListAsync();
 
 
@@ -143,9 +143,9 @@ namespace Project13.Stats.SeedStatsToDb
                     // initiera navigation om den skulle vara null
                     sum.Matches ??= new List<Detaljer>();
 
-                    if (!summeringSet.Contains(sum.Id))
+                    if (!summeringSet.Contains(sum.SvSpelInfoId))
                     {
-                        var svsId = sum.Id;
+                        var svsId = sum.SvSpelInfoId;
 
                         var matchedDetaljer = detaljer
                             .Where(d => d.SvSpelInfoId == svsId)
