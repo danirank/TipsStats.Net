@@ -83,24 +83,24 @@
     private CouponDto? coupon { get; set; }
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            coupon = await Http.GetFromJsonAsync<CouponDto>(ApiRoutes.Europatipset) ?? null;
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     try
+    //     {
+    //         coupon = await Http.GetFromJsonAsync<CouponDto>(ApiRoutes.Europatipset) ?? null;
 
-            if (coupon is not null)
-            {
-                matcher = coupon.Matches;
+    //         if (coupon is not null)
+    //         {
+    //             matcher = coupon.Matches;
                 
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Console.WriteLine(ex.Message);
+    //     }
 
-    }
+    // }
 
     @code {
     private void SelectSign(MatchInfo match, string sign)

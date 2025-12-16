@@ -13,22 +13,22 @@ namespace Project13.Stats.Api.Controllers
     {
         private readonly StatsService _service;
 
-       public StatsController(StatsService service)
-       {
+        public StatsController(StatsService service)
+        {
             _service = service;
 
-       }
+        }
 
-            [HttpGet]
-            public async Task<ActionResult<List<CalculationDto>>> GetAll()
-            {
-                var result =await _service.GetAllAsync();
+        [HttpGet]
+        public async Task<ActionResult<List<CalculationDto>>> GetAll()
+        {
+            var result = await _service.GetAllAsync();
 
-                return Ok(result);
-            }
+            return Ok(result);
+        }
 
-            
-        
+
+
         [HttpGet("search")]
         public async Task<ActionResult<List<CalculationDto>>> Search(
         [FromQuery] StatsFilter filter)
@@ -37,7 +37,12 @@ namespace Project13.Stats.Api.Controllers
             return Ok(result);
         }
 
-
+        [HttpGet("analyze")]
+        public async Task<ActionResult<SearchAnalysisResult>> Analyze([FromQuery] StatsFilter filter, [FromQuery] int maxSample = 1000)
+        {
+            var result = await _service.AnalyzeAsync(filter, maxSample);
+            return Ok(result);
+        }
 
     }
 }

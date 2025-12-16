@@ -6,16 +6,20 @@
       int BigFavCount,
       int MedFavCount,
       int CloseMatchCount, 
-      int TotalFavCount 
+      int TotalFavCount,
+      decimal DisagreementTop3Sum  
 
         
     );
 
-    public sealed record MatchCalcResult(
-    int MatchIndex,
-    string FavoriteSign,      // "1", "X", "2"
-    decimal FavoriteOdds,
-    bool IsBigFavorite,
-    bool IsCloseMatch);
+    public sealed record MatchCalcResult
+        (
+                int MatchIndex,
+                string FavoriteSign,      
+                decimal FavoriteOdds,
+                bool IsBigFavorite,
+                bool IsCloseMatch,
+               decimal Disagreement
+        );
 
 }
