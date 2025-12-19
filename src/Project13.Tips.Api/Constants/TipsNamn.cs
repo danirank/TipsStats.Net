@@ -20,4 +20,6 @@
         public const string Europatipset = Base + TipsNamn.Europatipset;
         public const string Topptipset = Base + TipsNamn.Topptipset;
     }
+
+    
 }

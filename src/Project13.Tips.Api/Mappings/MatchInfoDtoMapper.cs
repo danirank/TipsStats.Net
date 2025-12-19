@@ -23,6 +23,7 @@ namespace Project13.Tips.Api.Mappings
         Kvot1: ToDec(m.Kvot1),
         KvotX: ToDec(m.KvotX),
         Kvot2: ToDec(m.Kvot2)
+        
     );
 
         private static decimal ToDec(double v) => Convert.ToDecimal(v);

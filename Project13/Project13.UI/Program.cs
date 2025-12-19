@@ -1,4 +1,5 @@
 using Project13.UI.Components;
+using Project13.UI.Services;
 
 namespace Project13.UI
 {
@@ -12,8 +13,19 @@ namespace Project13.UI
             builder.Services.AddRazorComponents()
                 .AddInteractiveServerComponents();
 
-            var baseAdress = "https://localhost:7055/";
-            builder.Services.AddScoped(c => new HttpClient { BaseAddress = new Uri(baseAdress) });
+            builder.Services.AddHttpClient("CouponApi", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7055/");
+            });
+
+            // API 2 – FootballStats-API
+            builder.Services.AddHttpClient("FootballApi", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7173/");
+            });
+
+            builder.Services.AddScoped<CouponApiService>();
+            builder.Services.AddScoped<FootballStatsApiService>();
 
             var app = builder.Build();
 

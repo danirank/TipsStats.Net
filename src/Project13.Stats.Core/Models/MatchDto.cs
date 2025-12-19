@@ -23,6 +23,8 @@ namespace Project13.Stats.Core.Models
 
     decimal? KvotKorrektTecken,
     decimal Disagreement
+
+   
 );
 
 }
